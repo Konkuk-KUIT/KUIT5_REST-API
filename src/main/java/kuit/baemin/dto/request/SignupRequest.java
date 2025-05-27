@@ -1,11 +1,10 @@
-package kuit.baemin.dto;
+package kuit.baemin.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 //@Setter

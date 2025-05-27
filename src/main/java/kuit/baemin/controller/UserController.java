@@ -1,18 +1,16 @@
 package kuit.baemin.controller;
 
 import kuit.baemin.domain.User;
-import kuit.baemin.dto.SignupRequest;
+import kuit.baemin.dto.request.SignupRequest;
 import kuit.baemin.service.UserServiceV4;
 import kuit.baemin.utils.BaseResponse;
 import kuit.baemin.utils.BaseResponseStatus;
-import kuit.baemin.validator.SignupValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
