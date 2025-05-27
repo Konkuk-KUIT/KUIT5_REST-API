@@ -5,12 +5,14 @@ import kuit.baemin.dto.request.UserAddressRequest;
 import kuit.baemin.dto.response.UserAddressResponse;
 import kuit.baemin.service.UserAddressService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/user-addresses")
 @RequiredArgsConstructor
