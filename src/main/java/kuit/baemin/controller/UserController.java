@@ -80,7 +80,7 @@ public class UserController {
     }
 
     // 객체 to json
-    @PostMapping("/users")
+    @PostMapping("/api/users")
 //    @ResponseBody
     public BaseResponse<User> signup (@Validated @RequestBody SignupRequest signupRequest) {
         log.info("signup request - email : {}, password : {}",
