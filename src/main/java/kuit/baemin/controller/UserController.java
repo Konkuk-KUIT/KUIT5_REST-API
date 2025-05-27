@@ -22,22 +22,16 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserServiceV4 usersService;
-    private final SignupValidator signupValidator;
-
-    @InitBinder("signupRequest")
-    public void initBinder(WebDataBinder binder) {
-        binder.setValidator(signupValidator);
-    }
 
     //  기본
-    @PostMapping("/users")
+//    @PostMapping("/users")
 //    @ResponseBody
     public String signup1 (@Validated @RequestBody SignupRequest signupRequest, BindingResult bindingResult) {
         log.info("signup request - email : {}, password : {}, confirm_password : {}",
                 signupRequest.getEmail(), signupRequest.getPassword(), signupRequest.getConfirmPassword());
 
         if (bindingResult.hasErrors()) {
-            throw new IllegalArgumentException();
+            throw new RuntimeException();
         }
 
         return "ok";
