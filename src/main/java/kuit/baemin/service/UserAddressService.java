@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -18,6 +20,11 @@ public class UserAddressService {
     public UserAddressResponse save(UserAddressRequest request, Long userId) {
         Long newId = repository.save(request, userId);
         return repository.findById(newId);
+    }
+
+    @Transactional
+    public List<UserAddressResponse> findAllByUserId(Long userId) {
+        return repository.findAllByUserId(userId);
     }
 
 }

@@ -1,6 +1,5 @@
 package kuit.baemin.repository;
 
-import kuit.baemin.domain.User;
 import kuit.baemin.dto.request.UserAddressRequest;
 import kuit.baemin.dto.response.UserAddressResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -43,6 +43,11 @@ public class UserAddressRepository {
     public UserAddressResponse findById(Long id) {
         String sql = "SELECT * FROM user_address WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, userAddressRowMapper(), id);
+    }
+
+    public List<UserAddressResponse> findAllByUserId(Long userId) {
+        String sql = "SELECT * FROM user_address WHERE user_id = ? AND status = 'active'";
+        return jdbcTemplate.query(sql, userAddressRowMapper(), userId);
     }
 
     private RowMapper<UserAddressResponse> userAddressRowMapper() {
