@@ -1,4 +1,4 @@
-package kuit.baemin.repository;
+package kuit.baemin.repository.UserRepository;
 
 import kuit.baemin.domain.User;
 

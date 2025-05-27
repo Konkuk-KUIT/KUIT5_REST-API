@@ -2,7 +2,7 @@ package kuit.baemin.controller;
 
 import kuit.baemin.domain.User;
 import kuit.baemin.dto.request.SignupRequest;
-import kuit.baemin.service.UserServiceV4;
+import kuit.baemin.service.UserService.UserServiceV4;
 import kuit.baemin.utils.BaseResponse;
 import kuit.baemin.utils.BaseResponseStatus;
 import lombok.RequiredArgsConstructor;

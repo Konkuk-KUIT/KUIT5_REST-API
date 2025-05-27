@@ -1,8 +1,8 @@
-package kuit.baemin.service;
+package kuit.baemin.service.UserService;
 
 import kuit.baemin.domain.User;
 import kuit.baemin.dto.request.SignupRequest;
-import kuit.baemin.repository.UserRepository;
+import kuit.baemin.repository.UserRepository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
