@@ -18,15 +18,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserServiceV4 {
 
-    private final UserRepository userRepository;
-
-    @Transactional
-    public User save(SignupRequest signupRequest) {
-        return userRepository.save(new User(signupRequest.getEmail(), signupRequest.getPassword()));
-    }
-
-    private static void validateEmail() {
-        log.error("이메일 검증 오류");
-        throw new RuntimeException();
-    }
+//    private final UserRepository userRepository;
+//
+//    @Transactional
+//    public User save(SignupRequest signupRequest) {
+//        return userRepository.save(new User(signupRequest.getEmail(), signupRequest.getPassword()));
+//    }
+//    public Long createUser(SignupRequest request) {
+//        return userRepository.insertUser(request);
+//    }
+//    private static void validateEmail() {
+//        log.error("이메일 검증 오류");
+//        throw new RuntimeException();
+//    }
 }

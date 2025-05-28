@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
+@RestControllerAdvice(assignableTypes = {UserController.class})
 @RequiredArgsConstructor
 @Slf4j
 public class UserControllerAdvice {
@@ -27,7 +27,7 @@ public class UserControllerAdvice {
         return new BaseResponse<>(BaseResponseStatus.NON_MATCH_PASSWORD);
     }
 
-    @InitBinder
+    @InitBinder("signupRequest")
     public void initBinder(WebDataBinder binder) {
         binder.setValidator(signupValidator);
     }

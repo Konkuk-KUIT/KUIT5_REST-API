@@ -19,16 +19,16 @@ import java.sql.SQLException;
 @RequiredArgsConstructor
 public class UserServiceV3_1 {
 
-    private final UserRepositoryV3 userRepository;
-
-    @Transactional
-    public void save(SignupRequest signupRequest) throws SQLException {
-        userRepository.save(new User(signupRequest.getEmail(), signupRequest.getPassword()));
-        validateEmail();
-    }
-
-    private static void validateEmail() {
-        log.error("이메일 검증 오류");
-        throw new RuntimeException();
-    }
+//    private final UserRepositoryV3 userRepository;
+//
+//    @Transactional
+//    public void save(SignupRequest signupRequest) throws SQLException {
+//        userRepository.save(new User(signupRequest.getEmail(), signupRequest.getPassword()));
+//        validateEmail();
+//    }
+//
+//    private static void validateEmail() {
+//        log.error("이메일 검증 오류");
+//        throw new RuntimeException();
+//    }
 }
