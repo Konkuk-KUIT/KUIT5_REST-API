@@ -1,7 +1,9 @@
 package kuit.baemin.application;
 
 import kuit.baemin.domain.User;
+import kuit.baemin.dto.request.LoginRequest;
 import kuit.baemin.dto.request.UserRequest;
+import kuit.baemin.dto.response.LoginResponse;
 import kuit.baemin.dto.response.UserResponse;
 import kuit.baemin.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -32,5 +34,17 @@ public class UserService {
         userRepository.save(user);
 
         return UserResponse.from(user);
+    }
+
+    public LoginResponse userLogin(LoginRequest loginRequest) {
+
+        User user = userRepository.findByUserId(loginRequest.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다."));
+
+        if (!user.getPassword().equals(loginRequest.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 잘못되었습니다.");
+        }
+
+        return LoginResponse.from(user);
     }
 }
