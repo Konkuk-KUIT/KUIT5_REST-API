@@ -1,26 +1,30 @@
 package kuit.baemin.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
-@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Builder
+@Table(name = "user")
 public class User {
 
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private Long userId;
     private String email;
+    private String userId;
     private String password;
-    private String phone_number;
+    private String phoneNumber;
+
     private String nickname;
     private String profile_image;
-    private String status;
+
     private LocalDate created_at;
-    private LocalDate updated_at;
 }
