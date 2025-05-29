@@ -115,7 +115,7 @@ public class UserController {
         GetUserResponse user = usersService.findById(id);
         return new BaseResponse<>(user);
     }
-    
+
     @PutMapping("/users/{id}/password")
     public BaseResponse<User> updatePassword(@PathVariable Long id,
                                              @Validated @RequestBody PasswordChangeRequest passwordChangeRequest) {
@@ -126,7 +126,12 @@ public class UserController {
         // 일단 찾고, 수정한다.
     }
 
-    // todo : 특정 회원 삭제.
+    @DeleteMapping("/users/{id}")
+    public BaseResponse<Void> deleteUser(@PathVariable Long id) {
+        log.info("delete user - id : {}", id);
+        usersService.deleteById(id);
+        return new BaseResponse<Void>((Void) null);
+    }
 
 //    // 회원 수정 API
 //    @PatchMapping("/users/{id}")
