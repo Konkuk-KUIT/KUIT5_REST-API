@@ -1,6 +1,7 @@
 package kuit.baemin.service;
 
 import kuit.baemin.domain.User;
+import kuit.baemin.dto.PasswordChangeRequest;
 import kuit.baemin.dto.SignupRequest;
 import kuit.baemin.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class UserServiceV4 {
+public class UserService {
 
     private final UserRepository userRepository;
 
@@ -28,5 +29,14 @@ public class UserServiceV4 {
     private static void validateEmail() {
         log.error("이메일 검증 오류");
         throw new RuntimeException();
+    }
+
+    // db에 저장하고, 자바 메모리 유저 객체의 바뀐 값을 반영하기.
+    @Transactional
+    public User changePassword(Long id, PasswordChangeRequest passwordChangeRequest) {
+        User user = userRepository.findById(id);
+        userRepository.updatePassword(id, passwordChangeRequest.getNewPassword());
+        user.setPassword(passwordChangeRequest.getNewPassword());
+        return user;
     }
 }

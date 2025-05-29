@@ -1,8 +1,9 @@
 package kuit.baemin.controller.controllerAdvice;
 
-import kuit.baemin.controller.UserController;
+import kuit.baemin.exception.BusinessException;
 import kuit.baemin.utils.BaseResponse;
 import kuit.baemin.utils.BaseResponseStatus;
+import kuit.baemin.validator.PasswordChangeValidator;
 import kuit.baemin.validator.SignupValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,17 +20,26 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class UserControllerAdvice {
 
     private final SignupValidator signupValidator;
+    private final PasswordChangeValidator passwordChangeValidator;
 
-    @ExceptionHandler(RuntimeException.class)
+    // new BusinessException이 들어오면.
+    @ExceptionHandler(BusinessException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public BaseResponse<Object> handleRuntimeException(RuntimeException e) {
-        log.error(e.getMessage(), e);
-        return new BaseResponse<>(BaseResponseStatus.NON_MATCH_PASSWORD);
+    public BaseResponse<Object> handlePasswordMismatch(BusinessException ex) {
+        log.error(ex.getMessage(), ex);
+        return new BaseResponse<>(ex.getStatus());
     }
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.setValidator(signupValidator);
+    // SignupRequest 바인딩 때만 호출
+    @InitBinder("signupRequest")
+    public void signupInitBinder(WebDataBinder binder) {
+        binder.addValidators(signupValidator);
+    }
+
+    // PasswordChangeRequest 바인딩 때만 호출
+    @InitBinder("passwordChangeRequest")
+    public void passwordInitBinder(WebDataBinder binder) {
+        binder.addValidators(passwordChangeValidator);
     }
 
 }
