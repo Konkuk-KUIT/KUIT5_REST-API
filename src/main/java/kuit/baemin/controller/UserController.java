@@ -1,6 +1,7 @@
 package kuit.baemin.controller;
 
 import kuit.baemin.domain.User;
+import kuit.baemin.dto.GetUserResponse;
 import kuit.baemin.dto.PasswordChangeRequest;
 import kuit.baemin.dto.SignupRequest;
 import kuit.baemin.service.UserService;
@@ -108,11 +109,13 @@ public class UserController {
         return new BaseResponse<>(BaseResponseStatus.DUPLICATED_EMAIL);
     }
 
-    // todo : 회원 조회
-
-    // todo : 회원 전체 조회
-
-    // todo : 회원의 비밀번호 수정
+    @GetMapping("/users/{id}")
+    public BaseResponse<GetUserResponse> getUser(@PathVariable Long id) {
+        log.info("get user - id : {}", id);
+        GetUserResponse user = usersService.findById(id);
+        return new BaseResponse<>(user);
+    }
+    
     @PutMapping("/users/{id}/password")
     public BaseResponse<User> updatePassword(@PathVariable Long id,
                                              @Validated @RequestBody PasswordChangeRequest passwordChangeRequest) {

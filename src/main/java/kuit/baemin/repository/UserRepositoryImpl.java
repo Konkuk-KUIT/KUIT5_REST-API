@@ -59,5 +59,4 @@ public class UserRepositoryImpl implements UserRepository {
         String sql = "update user set password = ? where user_id = ?";
         jdbcTemplate.update(sql, newPassword, id);
     }
-
 }

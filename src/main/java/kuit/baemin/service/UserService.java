@@ -1,6 +1,7 @@
 package kuit.baemin.service;
 
 import kuit.baemin.domain.User;
+import kuit.baemin.dto.GetUserResponse;
 import kuit.baemin.dto.PasswordChangeRequest;
 import kuit.baemin.dto.SignupRequest;
 import kuit.baemin.repository.UserRepository;
@@ -38,5 +39,15 @@ public class UserService {
         userRepository.updatePassword(id, passwordChangeRequest.getNewPassword());
         user.setPassword(passwordChangeRequest.getNewPassword());
         return user;
+    }
+
+    @Transactional
+    public GetUserResponse findById(Long id) {
+        User user = userRepository.findById(id);
+        return new GetUserResponse(user.getEmail(),
+                user.getNickname(),
+                user.getPhoneNumber(),
+                user.getGrade(),
+                user.getProfileImage());
     }
 }

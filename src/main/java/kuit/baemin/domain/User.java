@@ -17,9 +17,10 @@ public class User {
     private Long userId;
     private String email;
     private String password;
-    private String phone_number;
+    private String phoneNumber;
+    public String grade;
     private String nickname;
-    private String profile_image;
+    private String profileImage;
     private String status;
     private LocalDate created_at;
     private LocalDate updated_at;
