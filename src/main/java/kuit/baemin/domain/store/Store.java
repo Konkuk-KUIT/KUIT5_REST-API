@@ -15,6 +15,8 @@ public class Store {
         this.minimumOrderPrice = minimumOrderPrice;
         this.deliveryFee = deliveryFee;
         this.status = StoreStatus.OPEN;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     private Long storeId;
@@ -24,6 +26,6 @@ public class Store {
     private int minimumOrderPrice;
     private int deliveryFee;
     private StoreStatus status;
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

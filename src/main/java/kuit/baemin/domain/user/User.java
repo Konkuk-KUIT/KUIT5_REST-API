@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -21,9 +22,12 @@ public class User {
         this.nickname = nickname;
         this.role = UserRole.USER;
         this.grade = UserGrade.VALUED;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     private Long userId;
+    private String addressId;
     private String email;
     private String password;
     private String phoneNumber;
@@ -32,6 +36,6 @@ public class User {
     private String nickname;
     private String profileImage;
     private String status;
-    private LocalDate created_at;
-    private LocalDate updated_at;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
