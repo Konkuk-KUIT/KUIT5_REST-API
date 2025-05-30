@@ -1,6 +1,7 @@
 package kuit.baemin.service;
 
 import kuit.baemin.domain.User;
+import kuit.baemin.dto.request.LoginRequest;
 import kuit.baemin.dto.response.UserResponse;
 import kuit.baemin.dto.request.PasswordChangeRequest;
 import kuit.baemin.dto.request.SignupRequest;
@@ -75,4 +76,14 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+//    @Transactional
+//    public UserResponse login(LoginRequest loginRequest) {
+//        User user = userRepository.findByEmail(loginRequest.getEmail());
+//        if (!user.getPassword().equals(loginRequest.getPassword())) {
+//            throw new RuntimeException("비밀번호가 틀렸습니다.");
+//        }
+//        return new UserResponse(user.getEmail(),
+//                user.getNickname(),
+//        )
+//    }
 }

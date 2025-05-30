@@ -9,6 +9,7 @@ public interface UserRepository {
 
     public User save(User user);
     public User findById(Long id);
+    User findByEmail(String email);
     public List<User> findAll();
     public void updatePassword(Long id, String newPassword);
     void deleteById(Long id);
