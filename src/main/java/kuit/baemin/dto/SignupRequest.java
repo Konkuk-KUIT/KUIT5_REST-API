@@ -12,17 +12,16 @@ import lombok.Setter;
 public class SignupRequest {
 
     @JsonCreator
-    public SignupRequest(@JsonProperty("email") String email,
-                         @JsonProperty("password") String password,
-                         @JsonProperty("confirm_password") String confirmPassword) {
+    public SignupRequest(@JsonProperty("name") String name,
+                         @JsonProperty("phone") String phone,
+                         @JsonProperty("email") String email) {
+        this.name = name;
+        this.phone = phone;
         this.email = email;
-        this.password = password;
-        this.confirmPassword = confirmPassword;
     }
 
+    private String name;
+    private String phone;
     @Email
     private String email;
-    @Size(min = 6, max = 20)
-    private String password;
-    private String confirmPassword;
 }

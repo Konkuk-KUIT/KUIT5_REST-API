@@ -20,27 +20,27 @@ import java.sql.SQLException;
 @RequiredArgsConstructor
 public class UserServiceV3 {
 
-    private final PlatformTransactionManager  transactionManager;
-    private final UserRepositoryV3 userRepository;
-
-    public void save(SignupRequest signupRequest) throws SQLException {
-
-        TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
-        try {
-
-            userRepository.save(new User(signupRequest.getEmail(), signupRequest.getPassword()));
-            validateEmail();
-
-            transactionManager.commit(status); //성공시 커밋
-        } catch (Exception e) {
-            transactionManager.rollback(status); //실패시 롤백
-            throw new IllegalStateException(e);
-        }
-
-    }
-
-    private static void validateEmail() {
-        log.error("이메일 검증 오류");
-        throw new RuntimeException();
-    }
+//    private final PlatformTransactionManager  transactionManager;
+//    private final UserRepositoryV3 userRepository;
+//
+//    public void save(SignupRequest signupRequest) throws SQLException {
+//
+//        TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+//        try {
+//
+//            userRepository.save(new User(signupRequest.getEmail(), signupRequest.getPassword()));
+//            validateEmail();
+//
+//            transactionManager.commit(status); //성공시 커밋
+//        } catch (Exception e) {
+//            transactionManager.rollback(status); //실패시 롤백
+//            throw new IllegalStateException(e);
+//        }
+//
+//    }
+//
+//    private static void validateEmail() {
+//        log.error("이메일 검증 오류");
+//        throw new RuntimeException();
+//    }
 }

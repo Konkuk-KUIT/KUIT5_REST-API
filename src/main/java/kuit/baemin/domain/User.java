@@ -1,26 +1,31 @@
 package kuit.baemin.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class User {
 
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-
-    private Long userId;
+    private Long id;
+    private String name;
+    private String phone;
     private String email;
-    private String password;
-    private String phone_number;
-    private String nickname;
-    private String profile_image;
-    private String status;
-    private LocalDate created_at;
-    private LocalDate updated_at;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    public User(Long id, String name, String phone, String email,
+                LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 }

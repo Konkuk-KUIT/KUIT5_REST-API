@@ -18,8 +18,8 @@ public class SignupValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         SignupRequest request = (SignupRequest) target;
-        if (!request.getPassword().equals(request.getConfirmPassword())) {
-            errors.reject("signup", "Passwords do not match");
-        }
+//        if (!request.getPassword().equals(request.getConfirmPassword())) {
+//            errors.reject("signup", "Passwords do not match");
+//        }
     }
 }

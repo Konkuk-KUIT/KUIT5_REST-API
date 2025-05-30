@@ -1,7 +1,11 @@
 package kuit.baemin.controller;
 
 import kuit.baemin.domain.User;
+import kuit.baemin.dto.LoginRequest;
 import kuit.baemin.dto.SignupRequest;
+import kuit.baemin.dto.UserOrderResponse;
+import kuit.baemin.service.UserOrderService;
+import kuit.baemin.service.UserService;
 import kuit.baemin.service.UserServiceV4;
 import kuit.baemin.utils.BaseResponse;
 import kuit.baemin.utils.BaseResponseStatus;
@@ -11,10 +15,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -22,86 +27,118 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-    private final UserServiceV4 usersService;
+    private final UserService userService;
+    private final UserOrderService userOrderService;
+
+    // 회원가입 api
+    @PostMapping("/users")
+    public BaseResponse<Map<String, Long>> signup(@RequestBody SignupRequest request) {
+        Long userId = userService.signup(request);
+//        Map<String, Long> result = new HashMap<>();
+//        result.put("userId", userId);
+//        return new BaseResponse<>(result);
+        return new BaseResponse<>(Map.of("userId", userId));
+    }
+
+    // id로 회원조회 api
+    @GetMapping("/users/{userId}")
+    public BaseResponse<User> getUser(@PathVariable("userId") Long userId) {
+        User user = userService.getUserById(userId);
+        return new BaseResponse<>(user);
+    }
+
+    // 이메일로 로그인 api
+    @PostMapping("/users/login")
+    public BaseResponse<Map<String, Object>> login(@RequestBody LoginRequest loginRequest) {
+        Map<String, Object> result = userService.login(loginRequest.getEmail());
+        return new BaseResponse<>(result);
+    }
+
+    @GetMapping("/users/{userId}/orders")
+    public BaseResponse<List<UserOrderResponse>> getUserOrders(@PathVariable("userId") Long userId) {
+        List<UserOrderResponse> orders = userOrderService.getUserOrders(userId);
+        return new BaseResponse<>(orders);
+    }
+
 
 
     //  기본
 //    @PostMapping("/users")
 //    @ResponseBody
-    public String signup1 (@Validated @RequestBody SignupRequest signupRequest, BindingResult bindingResult) {
-        log.info("signup request - email : {}, password : {}, confirm_password : {}",
-                signupRequest.getEmail(), signupRequest.getPassword(), signupRequest.getConfirmPassword());
-
-        if (bindingResult.hasErrors()) {
-            throw new RuntimeException();
-        }
-
-        return "ok";
-    }
-
-    // 요청 파라미터로 HttpEntity로 매핑
+//    public String signup1 (@Validated @RequestBody SignupRequest signupRequest, BindingResult bindingResult) {
+//        log.info("signup request - email : {}, password : {}, confirm_password : {}",
+//                signupRequest.getEmail(), signupRequest.getPassword(), signupRequest.getConfirmPassword());
+//
+//        if (bindingResult.hasErrors()) {
+//            throw new RuntimeException();
+//        }
+//
+//        return "ok";
+//    }
+//
+//    // 요청 파라미터로 HttpEntity로 매핑
+////    @PostMapping("/users")
+////    @ResponseBody
+//    public String signup2 (HttpEntity<SignupRequest> signupRequest) {
+//        log.info("signup request - email : {}, password : {}",
+//                signupRequest.getBody().getEmail(), signupRequest.getBody().getPassword());
+//
+//        return "ok";
+//    }
+//
+//    // 요청 파라미터와 응답 타입으로 HttpEntity 사용
+////    @PostMapping("/users")
+//    public HttpEntity<String> signup3 (HttpEntity<SignupRequest> signupRequest) {
+//        log.info("signup request - email : {}, password : {}",
+//                signupRequest.getBody().getEmail(), signupRequest.getBody().getPassword());
+//
+//        return new HttpEntity<>("ok");
+//    }
+//
+//    //  @RequestBody 제거
+////    @PostMapping("/users")
+////    @ResponseBody
+////    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public String signup4 (SignupRequest signupRequest) {
+//        log.info("signup request - email : {}, password : {}",
+//                signupRequest.getEmail(), signupRequest.getPassword());
+//
+//        return "no";
+//    }
+//
+//    // 객체 to json
+////    @PostMapping("/users")
+////    @ResponseBody
+//    public BaseResponse<User> signup5 (@RequestBody SignupRequest signupRequest) {
+//        log.info("signup request - email : {}, password : {}",
+//                signupRequest.getEmail(), signupRequest.getPassword());
+//
+//        User user = new User(signupRequest.getEmail(), signupRequest.getPassword());
+//
+//        return new BaseResponse<>(user);
+//    }
+//
+//    // 객체 to json
 //    @PostMapping("/users")
-//    @ResponseBody
-    public String signup2 (HttpEntity<SignupRequest> signupRequest) {
-        log.info("signup request - email : {}, password : {}",
-                signupRequest.getBody().getEmail(), signupRequest.getBody().getPassword());
-
-        return "ok";
-    }
-
-    // 요청 파라미터와 응답 타입으로 HttpEntity 사용
-//    @PostMapping("/users")
-    public HttpEntity<String> signup3 (HttpEntity<SignupRequest> signupRequest) {
-        log.info("signup request - email : {}, password : {}",
-                signupRequest.getBody().getEmail(), signupRequest.getBody().getPassword());
-
-        return new HttpEntity<>("ok");
-    }
-
-    //  @RequestBody 제거
-//    @PostMapping("/users")
-//    @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String signup4 (SignupRequest signupRequest) {
-        log.info("signup request - email : {}, password : {}",
-                signupRequest.getEmail(), signupRequest.getPassword());
-
-        return "no";
-    }
-
-    // 객체 to json
-//    @PostMapping("/users")
-//    @ResponseBody
-    public BaseResponse<User> signup5 (@RequestBody SignupRequest signupRequest) {
-        log.info("signup request - email : {}, password : {}",
-                signupRequest.getEmail(), signupRequest.getPassword());
-
-        User user = new User(signupRequest.getEmail(), signupRequest.getPassword());
-
-        return new BaseResponse<>(user);
-    }
-
-    // 객체 to json
-    @PostMapping("/users")
-//    @ResponseBody
-    public BaseResponse<User> signup (@Validated @RequestBody SignupRequest signupRequest) {
-        log.info("signup request - email : {}, password : {}",
-                signupRequest.getEmail(), signupRequest.getPassword());
-
-        User user = usersService.save(signupRequest);
-        return new BaseResponse<>(user);
-    }
-
-    //  오류 응답
-//    @PostMapping("/users")
-//    @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public BaseResponse<Object> signup6 (SignupRequest signupRequest) {
-        log.info("signup request - email : {}, password : {}",
-                signupRequest.getEmail(), signupRequest.getPassword());
-
-        return new BaseResponse<>(BaseResponseStatus.DUPLICATED_EMAIL);
-    }
+////    @ResponseBody
+//    public BaseResponse<User> signup (@Validated @RequestBody SignupRequest signupRequest) {
+//        log.info("signup request - email : {}, password : {}",
+//                signupRequest.getEmail(), signupRequest.getPassword());
+//
+//        User user = usersService.save(signupRequest);
+//        return new BaseResponse<>(user);
+//    }
+//
+//    //  오류 응답
+////    @PostMapping("/users")
+////    @ResponseBody
+////    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public BaseResponse<Object> signup6 (SignupRequest signupRequest) {
+//        log.info("signup request - email : {}, password : {}",
+//                signupRequest.getEmail(), signupRequest.getPassword());
+//
+//        return new BaseResponse<>(BaseResponseStatus.DUPLICATED_EMAIL);
+//    }
 
 
 }
