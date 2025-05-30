@@ -3,6 +3,8 @@ package kuit.baemin.controller;
 import kuit.baemin.domain.User;
 import kuit.baemin.dto.LoginRequest;
 import kuit.baemin.dto.SignupRequest;
+import kuit.baemin.dto.UserOrderResponse;
+import kuit.baemin.service.UserOrderService;
 import kuit.baemin.service.UserService;
 import kuit.baemin.service.UserServiceV4;
 import kuit.baemin.utils.BaseResponse;
@@ -16,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -25,6 +28,7 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final UserOrderService userOrderService;
 
     // 회원가입 api
     @PostMapping("/users")
@@ -49,6 +53,13 @@ public class UserController {
         Map<String, Object> result = userService.login(loginRequest.getEmail());
         return new BaseResponse<>(result);
     }
+
+    @GetMapping("/users/{userId}/orders")
+    public BaseResponse<List<UserOrderResponse>> getUserOrders(@PathVariable("userId") Long userId) {
+        List<UserOrderResponse> orders = userOrderService.getUserOrders(userId);
+        return new BaseResponse<>(orders);
+    }
+
 
 
     //  기본
