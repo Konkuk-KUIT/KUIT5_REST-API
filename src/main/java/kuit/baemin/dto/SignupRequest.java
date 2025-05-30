@@ -14,10 +14,15 @@ public class SignupRequest {
     @JsonCreator
     public SignupRequest(@JsonProperty("email") String email,
                          @JsonProperty("password") String password,
-                         @JsonProperty("confirm_password") String confirmPassword) {
+                         @JsonProperty("confirm_password") String confirmPassword,
+                         @JsonProperty("phone_number") String phoneNumber,
+                         @JsonProperty("nickname") String nickname
+                         ) {
         this.email = email;
         this.password = password;
         this.confirmPassword = confirmPassword;
+        this.phoneNumber = phoneNumber;
+        this.nickname = nickname;
     }
 
     @Email
@@ -25,4 +30,10 @@ public class SignupRequest {
     @Size(min = 6, max = 20)
     private String password;
     private String confirmPassword;
+    @Size(min = 11, max = 11, message = "핸드폰 번호는 11자리입니다.")
+    private String phoneNumber;
+    @Size(max = 30)
+    private String nickname;
+
+    // todo : 주소 추가하기.
 }

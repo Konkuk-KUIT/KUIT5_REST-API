@@ -1,7 +1,7 @@
 package kuit.baemin.service;
 
 import kuit.baemin.domain.User;
-import kuit.baemin.dto.GetUserResponse;
+import kuit.baemin.dto.UserResponse;
 import kuit.baemin.dto.PasswordChangeRequest;
 import kuit.baemin.dto.SignupRequest;
 import kuit.baemin.repository.UserRepository;
@@ -29,7 +29,7 @@ public class UserService {
      */
     @Transactional
     public User save(SignupRequest signupRequest) {
-        return userRepository.save(new User(signupRequest.getEmail(), signupRequest.getPassword()));
+        return userRepository.save(new User(signupRequest.getEmail(), signupRequest.getPassword(), signupRequest.getPhoneNumber(), signupRequest.getNickname()));
     }
 
     private static void validateEmail() {
@@ -58,9 +58,9 @@ public class UserService {
      * @return
      */
     @Transactional
-    public GetUserResponse findById(Long id) {
+    public UserResponse findById(Long id) {
         User user = userRepository.findById(id);
-        return new GetUserResponse(user.getEmail(),
+        return new UserResponse(user.getEmail(),
                 user.getNickname(),
                 user.getPhoneNumber(),
                 user.getGrade(),

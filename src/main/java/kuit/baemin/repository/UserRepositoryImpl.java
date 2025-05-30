@@ -26,10 +26,10 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User save(User user)  {
-        String sql = "insert into user(email, password) " +
-                "values (?, ?)";
+        String sql = "insert into user(email, password, phone_number, nickname) " +
+                "values (?, ?, ?, ?)";
 
-        jdbcTemplate.update(sql, user.getEmail(), user.getPassword());
+        jdbcTemplate.update(sql, user.getEmail(), user.getPassword(), user.getPhoneNumber(), user.getNickname());
 
         return user;
     }

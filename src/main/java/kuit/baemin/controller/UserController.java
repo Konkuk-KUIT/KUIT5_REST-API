@@ -1,7 +1,7 @@
 package kuit.baemin.controller;
 
 import kuit.baemin.domain.User;
-import kuit.baemin.dto.GetUserResponse;
+import kuit.baemin.dto.UserResponse;
 import kuit.baemin.dto.PasswordChangeRequest;
 import kuit.baemin.dto.SignupRequest;
 import kuit.baemin.service.UserService;
@@ -110,9 +110,9 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public BaseResponse<GetUserResponse> getUser(@PathVariable Long id) {
+    public BaseResponse<UserResponse> getUser(@PathVariable Long id) {
         log.info("get user - id : {}", id);
-        GetUserResponse user = usersService.findById(id);
+        UserResponse user = usersService.findById(id);
         return new BaseResponse<>(user);
     }
 

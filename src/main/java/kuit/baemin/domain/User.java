@@ -14,6 +14,13 @@ public class User {
         this.password = password;
     }
 
+    public User(String email, String password, String phoneNumber, String nickname) {
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.nickname = nickname;
+    }
+
     private Long userId;
     private String email;
     private String password;
@@ -24,4 +31,5 @@ public class User {
     private String status;
     private LocalDate created_at;
     private LocalDate updated_at;
+
 }

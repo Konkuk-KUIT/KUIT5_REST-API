@@ -6,13 +6,13 @@ import lombok.Getter;
 
 // 조회용 Response DTO -> 화면에 실제로 보여줘야 하는 필드만 이상적.
 @Getter
-public class GetUserResponse {
+public class UserResponse {
     @JsonCreator
-    public GetUserResponse(@JsonProperty("email") String email,
-                           @JsonProperty("nickname")String nickname,
-                           @JsonProperty("phone_number")String phoneNumber,
-                           @JsonProperty("grade")String grade,
-                           @JsonProperty("profile_image")String profileImage) {
+    public UserResponse(@JsonProperty("email") String email,
+                        @JsonProperty("nickname")String nickname,
+                        @JsonProperty("phone_number")String phoneNumber,
+                        @JsonProperty("grade")String grade,
+                        @JsonProperty("profile_image")String profileImage) {
         this.email = email;
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
