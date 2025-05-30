@@ -1,9 +1,8 @@
 package kuit.baemin.validator;
 
-import kuit.baemin.dto.SignupRequest;
+import kuit.baemin.dto.request.SignupRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.Validator;
 
 

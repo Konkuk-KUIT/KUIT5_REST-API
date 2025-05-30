@@ -1,29 +1,31 @@
 package kuit.baemin.controller;
 
+import kuit.baemin.domain.Restaurant;
 import kuit.baemin.domain.User;
-import kuit.baemin.dto.SignupRequest;
-import kuit.baemin.service.UserServiceV4;
+import kuit.baemin.dto.request.SignupRequest;
+import kuit.baemin.dto.response.RestaurantResponse;
+import kuit.baemin.service.UserService.UserServiceV4;
 import kuit.baemin.utils.BaseResponse;
 import kuit.baemin.utils.BaseResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
 //@Controller
+@RequestMapping("/api/users")
 @RestController
 public class UserController {
 
     private final UserServiceV4 usersService;
-
 
     //  기본
 //    @PostMapping("/users")
@@ -82,7 +84,7 @@ public class UserController {
     }
 
     // 객체 to json
-    @PostMapping("/users")
+    @PostMapping
 //    @ResponseBody
     public BaseResponse<User> signup (@Validated @RequestBody SignupRequest signupRequest) {
         log.info("signup request - email : {}, password : {}",
@@ -101,6 +103,13 @@ public class UserController {
                 signupRequest.getEmail(), signupRequest.getPassword());
 
         return new BaseResponse<>(BaseResponseStatus.DUPLICATED_EMAIL);
+    }
+
+    @GetMapping("/favorites")
+    public ResponseEntity<List<RestaurantResponse>> getFavoriteRestaurants() {
+        Long userId = 1L;
+        List<RestaurantResponse> favorites = usersService.getFavoriteRestaurants(userId);
+        return ResponseEntity.ok(favorites);
     }
 
 

@@ -27,7 +27,7 @@ public class UserControllerAdvice {
         return new BaseResponse<>(BaseResponseStatus.NON_MATCH_PASSWORD);
     }
 
-    @InitBinder
+    @InitBinder("signupRequest")
     public void initBinder(WebDataBinder binder) {
         binder.setValidator(signupValidator);
     }

@@ -1,7 +1,6 @@
-package kuit.baemin.repository;
+package kuit.baemin.repository.UserRepository;
 
 import kuit.baemin.domain.User;
-import kuit.baemin.repository.ex.MyDbException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.support.JdbcUtils;

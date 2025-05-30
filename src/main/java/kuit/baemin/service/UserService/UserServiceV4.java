@@ -1,12 +1,16 @@
-package kuit.baemin.service;
+package kuit.baemin.service.UserService;
 
+import kuit.baemin.domain.Restaurant;
 import kuit.baemin.domain.User;
-import kuit.baemin.dto.SignupRequest;
-import kuit.baemin.repository.UserRepository;
+import kuit.baemin.dto.request.SignupRequest;
+import kuit.baemin.dto.response.RestaurantResponse;
+import kuit.baemin.repository.UserRepository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * 예외 누수 문제 해결
@@ -28,5 +32,10 @@ public class UserServiceV4 {
     private static void validateEmail() {
         log.error("이메일 검증 오류");
         throw new RuntimeException();
+    }
+
+    @Transactional
+    public List<RestaurantResponse> getFavoriteRestaurants(Long userId) {
+        return userRepository.findFavoriteRestaurantsByUserId(userId);
     }
 }

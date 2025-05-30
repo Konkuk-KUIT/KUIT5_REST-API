@@ -1,9 +1,8 @@
-package kuit.baemin.repository;
+package kuit.baemin.repository.UserRepository;
 
 import kuit.baemin.connection.DBConnectionUtil;
 import kuit.baemin.domain.User;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 
