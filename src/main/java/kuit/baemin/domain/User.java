@@ -19,17 +19,19 @@ public class User {
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.nickname = nickname;
+        this.role = UserRole.USER;
+        this.grade = UserGrade.VALUED;
     }
 
     private Long userId;
     private String email;
     private String password;
     private String phoneNumber;
-    public String grade;
+    public UserGrade grade;
+    public UserRole role;
     private String nickname;
     private String profileImage;
     private String status;
     private LocalDate created_at;
     private LocalDate updated_at;
-
 }

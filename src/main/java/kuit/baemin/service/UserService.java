@@ -1,9 +1,9 @@
 package kuit.baemin.service;
 
 import kuit.baemin.domain.User;
-import kuit.baemin.dto.UserResponse;
-import kuit.baemin.dto.PasswordChangeRequest;
-import kuit.baemin.dto.SignupRequest;
+import kuit.baemin.dto.response.UserResponse;
+import kuit.baemin.dto.request.PasswordChangeRequest;
+import kuit.baemin.dto.request.SignupRequest;
 import kuit.baemin.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -63,7 +63,7 @@ public class UserService {
         return new UserResponse(user.getEmail(),
                 user.getNickname(),
                 user.getPhoneNumber(),
-                user.getGrade(),
+                user.getGrade().getKrName(),
                 user.getProfileImage());
     }
 

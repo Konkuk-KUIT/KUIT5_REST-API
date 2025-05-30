@@ -1,6 +1,7 @@
 package kuit.baemin.repository;
 
 import kuit.baemin.domain.User;
+import kuit.baemin.domain.UserGrade;
 import kuit.baemin.exception.BusinessException;
 import kuit.baemin.utils.BaseResponseStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +42,20 @@ public class UserRepositoryImpl implements UserRepository {
         String sql = "select * from user where user_id = ?";
         try {
             return jdbcTemplate.queryForObject(sql,
-                    new Object[]{id}, (rs, rowNum) -> new User(rs.getString("email"), rs.getString("password")));
+                    new Object[]{id},
+                    (rs, rowNum) -> {
+                        User u = new User(
+                                rs.getString("email"),
+                                rs.getString("password"),
+                                rs.getString("phone_number"),
+                                rs.getString("nickname")
+                        );
+                        // DB에서 꺼낸 값을 자바 필드에 덮어씌우기 -> DB에 처음 저장하고,
+                        // 추후에 등급이 변할 수 있으므로 이렇게 새로 덮어 씌우는게 맞다함.
+                        u.setGrade(UserGrade.fromKrName(rs.getString("grade")));
+                        return u;
+                    }
+            );
         } catch (EmptyResultDataAccessException e) {
             throw new BusinessException(BaseResponseStatus.USER_NOT_FOUND);
         }

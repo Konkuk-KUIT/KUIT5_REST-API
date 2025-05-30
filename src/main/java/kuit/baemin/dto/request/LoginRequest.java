@@ -1,4 +1,4 @@
-package kuit.baemin.dto;
+package kuit.baemin.dto.request;
 
 import lombok.Getter;
 

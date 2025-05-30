@@ -1,11 +1,10 @@
 package kuit.baemin.validator;
 
-import kuit.baemin.dto.SignupRequest;
+import kuit.baemin.dto.request.SignupRequest;
 import kuit.baemin.exception.BusinessException;
 import kuit.baemin.utils.BaseResponseStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.Validator;
 
 // controller에 @Validated을 붙이면, 스프링이 이 SignupValidator을 자동으로 호출
