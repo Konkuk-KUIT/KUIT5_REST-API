@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -15,5 +16,9 @@ public class MenuService {
 
     public List<MenuResponse> getMenusByRestaurantId(Long restaurantId) {
         return menuRepository.findMenusByRestaurantId(restaurantId);
+    }
+
+    public Optional<MenuResponse> getMenuById(Long menuId) {
+        return menuRepository.findById(menuId);
     }
 }
