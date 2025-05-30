@@ -1,7 +1,9 @@
 package kuit.baemin.controller;
 
+import kuit.baemin.domain.Restaurant;
 import kuit.baemin.domain.User;
 import kuit.baemin.dto.request.SignupRequest;
+import kuit.baemin.dto.response.RestaurantResponse;
 import kuit.baemin.service.UserService.UserServiceV4;
 import kuit.baemin.utils.BaseResponse;
 import kuit.baemin.utils.BaseResponseStatus;
@@ -9,13 +11,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Slf4j
 //@Controller
+@RequestMapping("/api/users")
 @RestController
 public class UserController {
 
@@ -78,7 +84,7 @@ public class UserController {
     }
 
     // 객체 to json
-    @PostMapping("/api/users")
+    @PostMapping
 //    @ResponseBody
     public BaseResponse<User> signup (@Validated @RequestBody SignupRequest signupRequest) {
         log.info("signup request - email : {}, password : {}",
@@ -97,6 +103,13 @@ public class UserController {
                 signupRequest.getEmail(), signupRequest.getPassword());
 
         return new BaseResponse<>(BaseResponseStatus.DUPLICATED_EMAIL);
+    }
+
+    @GetMapping("/favorites")
+    public ResponseEntity<List<RestaurantResponse>> getFavoriteRestaurants() {
+        Long userId = 1L;
+        List<RestaurantResponse> favorites = usersService.getFavoriteRestaurants(userId);
+        return ResponseEntity.ok(favorites);
     }
 
 
