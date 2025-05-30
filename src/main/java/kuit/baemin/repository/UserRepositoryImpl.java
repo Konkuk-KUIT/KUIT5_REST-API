@@ -1,7 +1,7 @@
 package kuit.baemin.repository;
 
-import kuit.baemin.domain.User;
-import kuit.baemin.domain.UserGrade;
+import kuit.baemin.domain.user.User;
+import kuit.baemin.domain.user.UserGrade;
 import kuit.baemin.exception.BusinessException;
 import kuit.baemin.utils.BaseResponseStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +12,7 @@ import org.yaml.snakeyaml.constructor.DuplicateKeyException;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * JdbcTemplate 사용
@@ -48,13 +49,13 @@ public class UserRepositoryImpl implements UserRepository {
     // id로 찾은 user가 값이 있거나 없을 수 있기 때문에
     // 반환 타입을 Optional로 하기.
     @Override
-    public User findById(Long id) {
+    public Optional<User> findById(Long id) {
         String sql = "select * from user where user_id = ?";
         try {
-            return jdbcTemplate.queryForObject(sql,
+            User u =  jdbcTemplate.queryForObject(sql,
                     new Object[]{id},
                     (rs, rowNum) -> {
-                        User u = new User(
+                        User user = new User(
                                 rs.getString("email"),
                                 rs.getString("password"),
                                 rs.getString("phone_number"),
@@ -62,12 +63,12 @@ public class UserRepositoryImpl implements UserRepository {
                         );
                         // DB에서 꺼낸 값을 자바 필드에 덮어씌우기 -> DB에 처음 저장하고,
                         // 추후에 등급이 변할 수 있으므로 이렇게 새로 덮어 씌우는게 맞다함.
-                        u.setGrade(UserGrade.fromKrName(rs.getString("grade")));
-                        return u;
-                    }
-            );
+                        user.setGrade(UserGrade.fromKrName(rs.getString("grade")));
+                        return user;
+                    });
+            return Optional.ofNullable(u);
         } catch (EmptyResultDataAccessException e) {
-            throw new BusinessException(BaseResponseStatus.USER_NOT_FOUND);
+            return Optional.empty();
         }
     }
 

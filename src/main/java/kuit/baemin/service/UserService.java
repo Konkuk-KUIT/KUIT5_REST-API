@@ -1,13 +1,15 @@
 package kuit.baemin.service;
 
-import kuit.baemin.domain.User;
-import kuit.baemin.dto.request.LoginRequest;
+import kuit.baemin.domain.user.User;
 import kuit.baemin.dto.response.UserResponse;
 import kuit.baemin.dto.request.PasswordChangeRequest;
 import kuit.baemin.dto.request.SignupRequest;
+import kuit.baemin.exception.BusinessException;
 import kuit.baemin.repository.UserRepository;
+import kuit.baemin.utils.BaseResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,7 +49,8 @@ public class UserService {
     // db에 저장하고, 자바 메모리 유저 객체의 바뀐 값을 반영하기.
     @Transactional
     public User changePassword(Long id, PasswordChangeRequest passwordChangeRequest) {
-        User user = userRepository.findById(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(BaseResponseStatus.USER_NOT_FOUND));
         userRepository.updatePassword(id, passwordChangeRequest.getNewPassword());
         user.setPassword(passwordChangeRequest.getNewPassword());
         return user;
@@ -60,7 +63,8 @@ public class UserService {
      */
     @Transactional
     public UserResponse findById(Long id) {
-        User user = userRepository.findById(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(BaseResponseStatus.USER_NOT_FOUND));
         return new UserResponse(user.getEmail(),
                 user.getNickname(),
                 user.getPhoneNumber(),
@@ -75,15 +79,4 @@ public class UserService {
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
-
-//    @Transactional
-//    public UserResponse login(LoginRequest loginRequest) {
-//        User user = userRepository.findByEmail(loginRequest.getEmail());
-//        if (!user.getPassword().equals(loginRequest.getPassword())) {
-//            throw new RuntimeException("비밀번호가 틀렸습니다.");
-//        }
-//        return new UserResponse(user.getEmail(),
-//                user.getNickname(),
-//        )
-//    }
 }

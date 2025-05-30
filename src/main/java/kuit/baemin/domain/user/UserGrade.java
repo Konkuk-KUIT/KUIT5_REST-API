@@ -1,4 +1,4 @@
-package kuit.baemin.domain;
+package kuit.baemin.domain.user;
 
 import kuit.baemin.exception.BusinessException;
 import kuit.baemin.utils.BaseResponseStatus;

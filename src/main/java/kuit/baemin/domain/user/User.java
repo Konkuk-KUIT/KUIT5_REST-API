@@ -1,4 +1,4 @@
-package kuit.baemin.domain;
+package kuit.baemin.domain.user;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,8 +27,8 @@ public class User {
     private String email;
     private String password;
     private String phoneNumber;
-    public UserGrade grade;
-    public UserRole role;
+    private UserGrade grade;
+    private UserRole role;
     private String nickname;
     private String profileImage;
     private String status;

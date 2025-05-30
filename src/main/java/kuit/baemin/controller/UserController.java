@@ -1,6 +1,6 @@
 package kuit.baemin.controller;
 
-import kuit.baemin.domain.User;
+import kuit.baemin.domain.user.User;
 import kuit.baemin.dto.response.UserResponse;
 import kuit.baemin.dto.request.PasswordChangeRequest;
 import kuit.baemin.dto.request.SignupRequest;
@@ -133,12 +133,5 @@ public class UserController {
         return new BaseResponse<Void>((Void) null);
     }
 
-//    // 회원 수정 API
-//    @PatchMapping("/users/{id}")
-//    public BaseResponse<User> updateUser(@PathVariable Long id, @Validated @RequestBody SignupRequest signupRequest) {
-//        log.info("update user - id : {}, email : {}, password : {}",
-//                id, signupRequest.getEmail(), signupRequest.getPassword());
-//        // 일단 찾고, 수정한다.
-//    }
 
 }
