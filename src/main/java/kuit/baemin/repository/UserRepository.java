@@ -1,8 +1,10 @@
 package kuit.baemin.repository;
 
 import kuit.baemin.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository {
+import java.util.Optional;
 
-    public User save(User user);
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByUserId(String userId);
 }
