@@ -116,4 +116,10 @@ public class UserRepositoryImpl implements UserRepository {
             throw new BusinessException(BaseResponseStatus.USER_NOT_FOUND);
         }
     }
+
+    @Override
+    public void updateUserAddress(Long id, Long addressId) {
+        String sql = "update user set address_id = ? where user_id = ?";
+        jdbcTemplate.update(sql, addressId, id);
+    }
 }

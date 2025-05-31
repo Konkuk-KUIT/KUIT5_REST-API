@@ -1,8 +1,8 @@
 package kuit.baemin.service;
 
 import kuit.baemin.domain.address.Addresses;
-import kuit.baemin.dto.request.AddAddressRequest;
-import kuit.baemin.repository.AddressRepository;
+import kuit.baemin.dto.request.address.AddAddressRequest;
+import kuit.baemin.repository.address.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

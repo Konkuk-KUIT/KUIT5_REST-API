@@ -1,4 +1,4 @@
-package kuit.baemin.dto.request;
+package kuit.baemin.dto.request.address;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

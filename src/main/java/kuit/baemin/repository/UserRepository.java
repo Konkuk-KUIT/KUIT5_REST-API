@@ -13,4 +13,5 @@ public interface UserRepository {
     public List<User> findAll();
     public void updatePassword(Long id, String newPassword);
     void deleteById(Long id);
+    void updateUserAddress(Long id, Long addressId);
 }

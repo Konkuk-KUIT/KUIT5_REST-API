@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class Addresses {
+    // 새 객체를 생성할 때 디폴트 값
     public Addresses(String city, String district, String streetAddress, String aptNumber) {
         this.city = city;
         this.district = district;

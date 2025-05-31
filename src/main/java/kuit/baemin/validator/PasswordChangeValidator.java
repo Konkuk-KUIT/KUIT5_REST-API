@@ -1,6 +1,6 @@
 package kuit.baemin.validator;
 
-import kuit.baemin.dto.request.PasswordChangeRequest;
+import kuit.baemin.dto.request.user.PasswordChangeRequest;
 import kuit.baemin.exception.BusinessException;
 import kuit.baemin.utils.BaseResponseStatus;
 import org.springframework.stereotype.Component;

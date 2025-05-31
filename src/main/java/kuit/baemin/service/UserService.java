@@ -2,14 +2,13 @@ package kuit.baemin.service;
 
 import kuit.baemin.domain.user.User;
 import kuit.baemin.dto.response.UserResponse;
-import kuit.baemin.dto.request.PasswordChangeRequest;
-import kuit.baemin.dto.request.SignupRequest;
+import kuit.baemin.dto.request.user.PasswordChangeRequest;
+import kuit.baemin.dto.request.user.SignupRequest;
 import kuit.baemin.exception.BusinessException;
 import kuit.baemin.repository.UserRepository;
 import kuit.baemin.utils.BaseResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

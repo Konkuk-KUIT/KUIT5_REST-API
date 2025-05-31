@@ -2,8 +2,8 @@ package kuit.baemin.controller;
 
 import kuit.baemin.domain.user.User;
 import kuit.baemin.dto.response.UserResponse;
-import kuit.baemin.dto.request.PasswordChangeRequest;
-import kuit.baemin.dto.request.SignupRequest;
+import kuit.baemin.dto.request.user.PasswordChangeRequest;
+import kuit.baemin.dto.request.user.SignupRequest;
 import kuit.baemin.service.UserService;
 import kuit.baemin.utils.BaseResponse;
 import kuit.baemin.utils.BaseResponseStatus;
