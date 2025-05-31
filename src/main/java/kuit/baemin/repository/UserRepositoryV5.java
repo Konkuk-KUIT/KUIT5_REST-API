@@ -1,7 +1,6 @@
 package kuit.baemin.repository;
 
 import kuit.baemin.domain.User;
-import kuit.baemin.repository.ex.MyDbException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.support.JdbcUtils;
@@ -26,8 +25,8 @@ public class UserRepositoryV5 implements UserRepository {
     }
 
     public User save(User user)  {
-        String sql = "insert into member(email, password, phone_number, nickname, profile_image) " +
-                "values (?, ?, ?, ?, ?)";
+        String sql = "insert into users(email, password, phone_number, nickname) " +
+                "values (?, ?, ?, ?)";
 
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -37,9 +36,8 @@ public class UserRepositoryV5 implements UserRepository {
             pstmt = con.prepareStatement(sql);
             pstmt.setString(1, user.getEmail());
             pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getPhone_number());
+            pstmt.setString(3, user.getPhoneNumber());
             pstmt.setString(4, user.getNickname());
-            pstmt.setString(5, user.getProfile_image());
             pstmt.executeUpdate();
             return user;
         } catch (SQLException e) {
@@ -60,5 +58,24 @@ public class UserRepositoryV5 implements UserRepository {
         JdbcUtils.closeStatement(stmt);
         DataSourceUtils.releaseConnection(con, dataSource);
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    return count > 0;
+                }
+                return false;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }

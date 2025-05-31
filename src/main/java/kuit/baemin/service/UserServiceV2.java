@@ -27,7 +27,7 @@ public class UserServiceV2 {
         try {
             connection.setAutoCommit(false);
 
-            userRepository.save(connection, new User(signupRequest.getEmail(), signupRequest.getPassword()));
+            userRepository.save(connection, new User(signupRequest.getEmail(), signupRequest.getPassword(), signupRequest.getPhoneNumber(), signupRequest.getNickname()));
             validateEmail();
 
             connection.commit(); //성공시 커밋

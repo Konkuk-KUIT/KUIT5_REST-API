@@ -22,11 +22,21 @@ public class UserServiceV4 {
 
     @Transactional
     public User save(SignupRequest signupRequest) {
-        return userRepository.save(new User(signupRequest.getEmail(), signupRequest.getPassword()));
+        return userRepository.save(new User(
+                signupRequest.getEmail(),
+                signupRequest.getPassword(),
+                signupRequest.getPhoneNumber(),
+                signupRequest.getNickname()
+
+        ));
     }
 
     private static void validateEmail() {
         log.error("이메일 검증 오류");
         throw new RuntimeException();
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

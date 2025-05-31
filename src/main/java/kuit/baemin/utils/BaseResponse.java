@@ -30,5 +30,12 @@ public class BaseResponse<T> {
         this.result = null;
     }
 
+    public BaseResponse(boolean isSuccess, int responseCode, String responseMessage) {
+        this.isSuccess = isSuccess;
+        this.responseCode = responseCode;
+        this.responseMessage = responseMessage;
+        this.result = null;
+    }
+
 
 }

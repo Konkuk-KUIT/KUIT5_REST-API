@@ -25,8 +25,8 @@ public class UserRepositoryV4 implements UserRepository {
     }
 
     public User save(User user)  {
-        String sql = "insert into member(email, password, phone_number, nickname, profile_image) " +
-                "values (?, ?, ?, ?, ?)";
+        String sql = "insert into users(email, password, phone_number, nickname) " +
+                "values (?, ?, ?, ?)";
 
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -36,9 +36,8 @@ public class UserRepositoryV4 implements UserRepository {
             pstmt = con.prepareStatement(sql);
             pstmt.setString(1, user.getEmail());
             pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getPhone_number());
+            pstmt.setString(3, user.getPhoneNumber());
             pstmt.setString(4, user.getNickname());
-            pstmt.setString(5, user.getProfile_image());
             pstmt.executeUpdate();
             return user;
         } catch (SQLException e) {
@@ -59,6 +58,34 @@ public class UserRepositoryV4 implements UserRepository {
         JdbcUtils.closeResultSet(rs);
         JdbcUtils.closeStatement(stmt);
         DataSourceUtils.releaseConnection(con, dataSource);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, email);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            log.error("db error", e);
+            throw new MyDbException(e);
+        } finally {
+            close(con, pstmt, rs);
+        }
     }
 
 }
