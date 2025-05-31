@@ -11,6 +11,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class MenuService {
@@ -51,4 +54,13 @@ public class MenuService {
         menu.update(menuRequest);
         return MenuResponse.from(menu);
     }
+
+    public List<MenuResponse> getMenus(Long restaurantId) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 음식점이 존재하지 않습니다."));
+
+        List<Menu> menus = menuRepository.findAllByRestaurantId(restaurantId);
+        return menus.stream()
+                .map(MenuResponse::from)
+                .collect(Collectors.toList());}
 }

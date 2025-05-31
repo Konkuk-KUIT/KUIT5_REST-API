@@ -1,20 +1,26 @@
 package kuit.baemin.api;
 
 import kuit.baemin.application.MenuService;
-import kuit.baemin.domain.Menu;
 import kuit.baemin.dto.request.MenuRequest;
 import kuit.baemin.dto.response.MenuResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/restaurants/{restaurantId}/menus")
 public class MenuApi {
     private final MenuService menuService;
+
+    @GetMapping
+    public ResponseEntity <List<MenuResponse>> getMenus(@PathVariable Long restaurantId){
+        List<MenuResponse> menuResponses = menuService.getMenus(restaurantId);
+        return ResponseEntity.ok(menuResponses);
+    }
 
     @PostMapping
     public ResponseEntity<MenuResponse> registerMenu(@PathVariable Long restaurantId, @RequestBody MenuRequest menuRequest) {
