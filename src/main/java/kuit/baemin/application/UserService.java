@@ -8,6 +8,7 @@ import kuit.baemin.dto.response.UserResponse;
 import kuit.baemin.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 public class UserService {
     private final UserRepository userRepository;
 
+    @Transactional
     public UserResponse userSignup(UserRequest request) {
         if (userRepository.findByUserId(request.getUserId()).isPresent()){
             throw new IllegalArgumentException("이미 존재하는 유저 아이디입니다.");
