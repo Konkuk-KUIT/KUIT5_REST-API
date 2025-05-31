@@ -1,13 +1,12 @@
 package kuit.baemin.api;
 
 import kuit.baemin.application.RestaurantService;
+import kuit.baemin.dto.request.RestaurantRequest;
 import kuit.baemin.dto.response.RestaurantResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -20,6 +19,13 @@ public class RestaurantApi {
     public ResponseEntity<RestaurantResponse> getRestaurant(@PathVariable Long restaurantId){
         RestaurantResponse response = restaurantService.getRestaurantDetail(restaurantId);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping
+    public ResponseEntity<RestaurantResponse> registerRestaurant(@RequestBody RestaurantRequest restaurantRequest){
+        RestaurantResponse response = restaurantService.registerRestaurant(restaurantRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
     }
 
 }
