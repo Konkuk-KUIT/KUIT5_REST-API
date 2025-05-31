@@ -1,11 +1,10 @@
 package kuit.baemin.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import kuit.baemin.dto.request.UserRequest;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -29,4 +28,9 @@ public class User {
     private String profile_image;
 
     private LocalDate created_at;
+
+    public void update(UserRequest userRequest) {
+       this.email = userRequest.getEmail();
+       this.nickname = userRequest.getNickname();
+    }
 }

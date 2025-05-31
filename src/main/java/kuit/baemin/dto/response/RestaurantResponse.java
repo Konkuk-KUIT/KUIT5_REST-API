@@ -24,7 +24,6 @@ public class RestaurantResponse {
                 .name(restaurant.getName())
                 .phoneNumber(restaurant.getPhoneNumber())
                 .deliveryFee(restaurant.getDeliveryFee())
-                .createdAt(restaurant.getCreatedAt())
                 .minOrderPrice(restaurant.getMinOrderPrice())
                 .latitude(restaurant.getLatitude())
                 .longitude(restaurant.getLongitude())

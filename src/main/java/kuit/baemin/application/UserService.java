@@ -49,4 +49,20 @@ public class UserService {
 
         return LoginResponse.from(user);
     }
+
+    public UserResponse getUserInfo(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+
+        return UserResponse.from(user);
+    }
+
+    @Transactional
+    public UserResponse updateUserInfo(Long userId, UserRequest userRequest) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+
+        user.update(userRequest);
+        return UserResponse.from(user);
+    }
 }
