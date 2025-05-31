@@ -1,11 +1,12 @@
 package kuit.baemin.domain;
 
 import jakarta.persistence.*;
-import kuit.baemin.domain.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "restaurant")
@@ -21,7 +22,7 @@ public class Restaurant {
     @Column(nullable = false)
     private String name;
     private String phoneNumber;
-    private String createdAt;
+    private LocalDate createdAt;
     private int minOrderPrice;
     private int deliveryFee;
 
