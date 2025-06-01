@@ -29,11 +29,6 @@ public class StoreService {
         ));
     }
 
-    @Transactional(readOnly = true)
-    public Store findById(Long storeId) {
-        return storeRepository.findById(storeId)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 가게입니다."));
-    }
 
     @Transactional(readOnly = true)
     public List<Store> findStoresByCategoryWithPaging(Long categoryId, int size, Long lastStoreId) {

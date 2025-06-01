@@ -8,7 +8,5 @@ import java.util.Optional;
 public interface StoreRepository {
     Store save(Store store);
 
-    Optional<Store> findById(Long storeId);
-
     List<Store> findStoresByCategoryWithPaging(Long categoryId, int size, Long lastStoreId);
 }

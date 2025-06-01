@@ -1,6 +1,5 @@
 package kuit.baemin.controller.controllerAdvice;
 
-import kuit.baemin.controller.UserController;
 import kuit.baemin.utils.BaseResponse;
 import kuit.baemin.utils.BaseResponseStatus;
 import kuit.baemin.validator.SignupValidator;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @RequiredArgsConstructor
 @Slf4j
-public class UserControllerAdvice {
+public class ControllerAdvice {
 
     private final SignupValidator signupValidator;
 

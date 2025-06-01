@@ -31,9 +31,4 @@ public class StoreController {
         return new BaseResponse<>(stores);
     }
 
-    @GetMapping("/stores/{storeId}")
-    public BaseResponse<Store> getStore(@PathVariable Long storeId) {
-        Store store = storeService.findById(storeId);
-        return new BaseResponse<>(store);
-    }
 }

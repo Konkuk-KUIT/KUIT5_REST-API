@@ -44,27 +44,6 @@ public class StoreRepositoryV6 implements StoreRepository {
         return store;
     }
 
-    @Override
-    public Optional<Store> findById(Long storeId) {
-        String sql = "SELECT * FROM store WHERE store_id = ?";
-
-        return jdbcTemplate.query(sql,
-                rs -> {
-                    if (rs.next()) {
-                        Store store = new Store(
-                                rs.getLong("store_id"),
-                                rs.getString("store_name"),
-                                rs.getString("location"),
-                                rs.getInt("minimum_price"),
-                                rs.getBoolean("activate"),
-                                rs.getLong("category_id")
-                        );
-                        return Optional.of(store);
-                    } else {
-                        return Optional.empty();
-                    }
-                }, storeId);
-    }
 
     @Override
     public List<Store> findStoresByCategoryWithPaging(Long categoryId, int size, Long lastStoreId) {
