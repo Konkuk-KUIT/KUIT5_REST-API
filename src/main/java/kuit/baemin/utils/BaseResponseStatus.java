@@ -9,9 +9,9 @@ public enum BaseResponseStatus {
 
     SUCCESS(true, 1000, "요청에 성공하였습니다."),
     DUPLICATED_EMAIL(false, 2001, "중복된 이메일 입니다."),
-    NON_MATCH_PASSWORD(false, 2002, "비밀번호가 일치하지 않습니다.");
-
-
+    NON_MATCH_PASSWORD(false, 2002, "비밀번호가 일치하지 않습니다."),
+    LOGIN_FAILED(false, 2003, "이메일 또는 비밀번호가 일치하지 않습니다."),
+    INVALID_REQUEST(false, 4000, "잘못된 요청입니다.");
 
     private final boolean isSuccess;
     private final int responseCode;

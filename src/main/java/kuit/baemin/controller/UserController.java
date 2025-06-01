@@ -1,6 +1,7 @@
 package kuit.baemin.controller;
 
 import kuit.baemin.domain.User;
+import kuit.baemin.dto.LoginRequest;
 import kuit.baemin.dto.SignupRequest;
 import kuit.baemin.service.UserServiceV4;
 import kuit.baemin.utils.BaseResponse;
@@ -134,6 +135,19 @@ public class UserController {
         );
 
         return new BaseResponse<>(BaseResponseStatus.DUPLICATED_EMAIL);
+    }
+
+    @PostMapping("/login")
+    public BaseResponse<User> login(@RequestBody LoginRequest loginRequest) {
+        log.info("login request - email: {}, password: {}", loginRequest.getEmail(), loginRequest.getPassword());
+
+        try {
+            User user = usersService.login(loginRequest.getEmail(), loginRequest.getPassword());
+            return new BaseResponse<>(user);
+        } catch (RuntimeException e) {
+            log.error("Login failed: {}", e.getMessage());
+            return new BaseResponse<>(false, 2003, e.getMessage());
+        }
     }
 
 

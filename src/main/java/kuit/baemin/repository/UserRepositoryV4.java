@@ -8,6 +8,7 @@ import org.springframework.jdbc.support.JdbcUtils;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.Optional;
 
 /**
  * 예외 누수 문제 해결
@@ -79,6 +80,40 @@ public class UserRepositoryV4 implements UserRepository {
                 return count > 0;
             } else {
                 return false;
+            }
+        } catch (SQLException e) {
+            log.error("db error", e);
+            throw new MyDbException(e);
+        } finally {
+            close(con, pstmt, rs);
+        }
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        String sql = "SELECT * FROM users WHERE email = ?";
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, email);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                User user = new User(
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("phone_number"),
+                        rs.getString("nickname")
+                );
+                user.setUserId(rs.getLong("user_id"));
+                return Optional.of(user);
+            } else {
+                return Optional.empty();
             }
         } catch (SQLException e) {
             log.error("db error", e);

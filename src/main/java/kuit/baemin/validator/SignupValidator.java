@@ -10,10 +10,8 @@ import org.springframework.validation.Validator;
 
 
 @Component
-@RequiredArgsConstructor
 public class SignupValidator implements Validator {
 
-    private final UserServiceV4 userService;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -26,10 +24,5 @@ public class SignupValidator implements Validator {
         if (!request.getPassword().equals(request.getConfirmPassword())) {
             errors.reject("NON_MATCH_PASSWORD");
         }
-
-        if (userService.existsByEmail(request.getEmail())) {
-            errors.reject("DUPLICATED_EMAIL");
-        }
-
     }
 }

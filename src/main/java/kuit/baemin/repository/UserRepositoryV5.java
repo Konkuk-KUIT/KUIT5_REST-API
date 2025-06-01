@@ -9,6 +9,7 @@ import org.springframework.jdbc.support.SQLExceptionTranslator;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.Optional;
 
 /**
  * SQLExceptionTranslator 추가
@@ -74,6 +75,40 @@ public class UserRepositoryV5 implements UserRepository {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        String sql = "SELECT * FROM users WHERE email = ?";
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, email);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                User user = new User(
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("phone_number"),
+                        rs.getString("nickname")
+                );
+                user.setUserId(rs.getLong("user_id"));
+                return Optional.of(user);
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            log.error("db error", e);
+            throw sqlExceptionTranslator.translate("findByEmail", sql, e);
+        } finally {
+            close(con, pstmt, rs);
         }
     }
 

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.Optional;
 
 /**
  * JdbcTemplate 사용
@@ -50,5 +51,27 @@ public class UserRepositoryV6 implements UserRepository {
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
         return count != null && count > 0;
     }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        String sql = "SELECT * FROM users WHERE email = ?";
+
+        return jdbcTemplate.query(sql,
+                rs -> {
+                    if (rs.next()) {
+                        User user = new User(
+                                rs.getString("email"),
+                                rs.getString("password"),
+                                rs.getString("phone_number"),
+                                rs.getString("nickname")
+                        );
+                        user.setUserId(rs.getLong("user_id"));
+                        return Optional.of(user);
+                    } else {
+                        return Optional.empty();
+                    }
+                }, email);
+    }
+
 
 }

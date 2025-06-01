@@ -20,12 +20,16 @@ public class UserControllerAdvice {
 
     private final SignupValidator signupValidator;
 
-//    @ExceptionHandler(RuntimeException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public BaseResponse<Object> handleRuntimeException(RuntimeException e) {
-//        log.error(e.getMessage(), e);
-//        return new BaseResponse<>(BaseResponseStatus.NON_MATCH_PASSWORD);
-//    }
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public BaseResponse<Object> handleRuntimeException(RuntimeException e) {
+        log.error(e.getMessage(), e);
+        if (e.getMessage().equals(BaseResponseStatus.DUPLICATED_EMAIL.getResponseMessage())) {
+            return new BaseResponse<>(BaseResponseStatus.DUPLICATED_EMAIL);
+        }
+
+        return new BaseResponse<>(BaseResponseStatus.INVALID_REQUEST);
+    }
 
 
     @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
@@ -52,7 +56,7 @@ public class UserControllerAdvice {
     }
 
 
-    @InitBinder
+    @InitBinder("signupRequest")
     public void initBinder(WebDataBinder binder) {
         binder.addValidators(signupValidator);
     }
