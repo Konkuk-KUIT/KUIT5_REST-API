@@ -1,10 +1,12 @@
 package kuit.baemin.service;
 
+import kuit.baemin.domain.address.StoreAddress;
 import kuit.baemin.domain.store.Store;
 import kuit.baemin.dto.request.GenerateStoreRequest;
 import kuit.baemin.exception.BusinessException;
 import kuit.baemin.repository.StoreRepository;
 import kuit.baemin.repository.UserRepository;
+import kuit.baemin.repository.address.StoreAddressRepository;
 import kuit.baemin.utils.BaseResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,16 +19,29 @@ import org.springframework.transaction.annotation.Transactional;
 public class StoreService {
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
+    private final StoreAddressRepository storeAddressRepository;
 
     @Transactional
     public Store save(Long userId, GenerateStoreRequest request){
         userRepository.findById(userId).orElseThrow(() -> new BusinessException(BaseResponseStatus.USER_NOT_FOUND));
-        return storeRepository.save(new Store(
+
+        Store store = new Store(
                 userId,
-                1L, // todo : addressId도 추후 추가하기.
+                request.getAddressId(),
                 request.getName(),
                 request.getMinimumOrderPrice(),
                 request.getDeliveryFee()
-        ));
+        );
+        Store savedStore = storeRepository.save(store);
+
+        //StoreAddress 저장
+        StoreAddress storeAddress = new StoreAddress(
+                savedStore.getStoreId(),
+                request.getAddressId()
+        );
+        storeAddressRepository.save(storeAddress);
+
+
+        return savedStore;
     }
 }

@@ -87,6 +87,7 @@ public class UserRepositoryImpl implements UserRepository {
                                 rs.getString("nickname")
                         );
                         // 메서드 전체의 결과 반환
+                        u.setUserId(rs.getLong("user_id")); // 이래야 user_id가 null이 아님.
                         u.setGrade(UserGrade.fromKrName(rs.getString("grade")));
                         return u;
                     }
