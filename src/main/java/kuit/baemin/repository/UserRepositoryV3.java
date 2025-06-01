@@ -23,8 +23,8 @@ public class UserRepositoryV3 {
     }
 
     public User save(User user) throws SQLException {
-        String sql = "insert into member(email, password, phone_number, nickname, profile_image) " +
-                "values (?, ?, ?, ?, ?)";
+        String sql = "insert into users(email, password, phone_number, nickname) " +
+                "values (?, ?, ?, ?)";
 
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -34,9 +34,9 @@ public class UserRepositoryV3 {
             pstmt = con.prepareStatement(sql);
             pstmt.setString(1, user.getEmail());
             pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getPhone_number());
+            pstmt.setString(3, user.getPhoneNumber());
             pstmt.setString(4, user.getNickname());
-            pstmt.setString(5, user.getProfile_image());
+
             pstmt.executeUpdate();
             return user;
         } catch (SQLException e) {

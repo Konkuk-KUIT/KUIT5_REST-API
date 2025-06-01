@@ -1,6 +1,7 @@
 package kuit.baemin.controller;
 
 import kuit.baemin.domain.User;
+import kuit.baemin.dto.LoginRequest;
 import kuit.baemin.dto.SignupRequest;
 import kuit.baemin.service.UserServiceV4;
 import kuit.baemin.utils.BaseResponse;
@@ -29,8 +30,13 @@ public class UserController {
 //    @PostMapping("/users")
 //    @ResponseBody
     public String signup1 (@Validated @RequestBody SignupRequest signupRequest, BindingResult bindingResult) {
-        log.info("signup request - email : {}, password : {}, confirm_password : {}",
-                signupRequest.getEmail(), signupRequest.getPassword(), signupRequest.getConfirmPassword());
+        log.info("signup request - email : {}, password : {}, confirm_password: {}, nickname: {}, phoneNumber: {}",
+                signupRequest.getEmail(),
+                signupRequest.getPassword(),
+                signupRequest.getConfirmPassword(),
+                signupRequest.getNickname(),
+                signupRequest.getPhoneNumber()
+        );
 
         if (bindingResult.hasErrors()) {
             throw new RuntimeException();
@@ -43,18 +49,26 @@ public class UserController {
 //    @PostMapping("/users")
 //    @ResponseBody
     public String signup2 (HttpEntity<SignupRequest> signupRequest) {
-        log.info("signup request - email : {}, password : {}",
-                signupRequest.getBody().getEmail(), signupRequest.getBody().getPassword());
-
+        log.info("signup request - email : {}, password : {}, confirm_password: {}, nickname: {}, phoneNumber: {}",
+                signupRequest.getBody().getEmail(),
+                signupRequest.getBody().getPassword(),
+                signupRequest.getBody().getConfirmPassword(),
+                signupRequest.getBody().getNickname(),
+                signupRequest.getBody().getPhoneNumber()
+        );
         return "ok";
     }
 
     // 요청 파라미터와 응답 타입으로 HttpEntity 사용
 //    @PostMapping("/users")
     public HttpEntity<String> signup3 (HttpEntity<SignupRequest> signupRequest) {
-        log.info("signup request - email : {}, password : {}",
-                signupRequest.getBody().getEmail(), signupRequest.getBody().getPassword());
-
+        log.info("signup request - email : {}, password : {}, confirm_password: {}, nickname: {}, phoneNumber: {}",
+                signupRequest.getBody().getEmail(),
+                signupRequest.getBody().getPassword(),
+                signupRequest.getBody().getConfirmPassword(),
+                signupRequest.getBody().getNickname(),
+                signupRequest.getBody().getPhoneNumber()
+        );
         return new HttpEntity<>("ok");
     }
 
@@ -63,8 +77,13 @@ public class UserController {
 //    @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String signup4 (SignupRequest signupRequest) {
-        log.info("signup request - email : {}, password : {}",
-                signupRequest.getEmail(), signupRequest.getPassword());
+        log.info("signup request - email : {}, password : {}, confirm_password: {}, nickname: {}, phoneNumber: {}",
+                signupRequest.getEmail(),
+                signupRequest.getPassword(),
+                signupRequest.getConfirmPassword(),
+                signupRequest.getNickname(),
+                signupRequest.getPhoneNumber()
+        );
 
         return "no";
     }
@@ -73,10 +92,15 @@ public class UserController {
 //    @PostMapping("/users")
 //    @ResponseBody
     public BaseResponse<User> signup5 (@RequestBody SignupRequest signupRequest) {
-        log.info("signup request - email : {}, password : {}",
-                signupRequest.getEmail(), signupRequest.getPassword());
+        log.info("signup request - email : {}, password : {}, confirm_password: {}, nickname: {}, phoneNumber: {}",
+                signupRequest.getEmail(),
+                signupRequest.getPassword(),
+                signupRequest.getConfirmPassword(),
+                signupRequest.getNickname(),
+                signupRequest.getPhoneNumber()
+        );
 
-        User user = new User(signupRequest.getEmail(), signupRequest.getPassword());
+        User user = new User(signupRequest.getEmail(), signupRequest.getPassword(), signupRequest.getPhoneNumber(),signupRequest.getNickname());
 
         return new BaseResponse<>(user);
     }
@@ -85,8 +109,13 @@ public class UserController {
     @PostMapping("/users")
 //    @ResponseBody
     public BaseResponse<User> signup (@Validated @RequestBody SignupRequest signupRequest) {
-        log.info("signup request - email : {}, password : {}",
-                signupRequest.getEmail(), signupRequest.getPassword());
+        log.info("signup request - email : {}, password : {}, confirm_password: {}, nickname: {}, phoneNumber: {}",
+                signupRequest.getEmail(),
+                signupRequest.getPassword(),
+                signupRequest.getConfirmPassword(),
+                signupRequest.getNickname(),
+                signupRequest.getPhoneNumber()
+        );
 
         User user = usersService.save(signupRequest);
         return new BaseResponse<>(user);
@@ -97,10 +126,28 @@ public class UserController {
 //    @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public BaseResponse<Object> signup6 (SignupRequest signupRequest) {
-        log.info("signup request - email : {}, password : {}",
-                signupRequest.getEmail(), signupRequest.getPassword());
+        log.info("signup request - email : {}, password : {}, confirm_password: {}, nickname: {}, phoneNumber: {}",
+                signupRequest.getEmail(),
+                signupRequest.getPassword(),
+                signupRequest.getConfirmPassword(),
+                signupRequest.getNickname(),
+                signupRequest.getPhoneNumber()
+        );
 
         return new BaseResponse<>(BaseResponseStatus.DUPLICATED_EMAIL);
+    }
+
+    @PostMapping("/login")
+    public BaseResponse<User> login(@RequestBody LoginRequest loginRequest) {
+        log.info("login request - email: {}, password: {}", loginRequest.getEmail(), loginRequest.getPassword());
+
+        try {
+            User user = usersService.login(loginRequest.getEmail(), loginRequest.getPassword());
+            return new BaseResponse<>(user);
+        } catch (RuntimeException e) {
+            log.error("Login failed: {}", e.getMessage());
+            return new BaseResponse<>(false, 2003, e.getMessage());
+        }
     }
 
 

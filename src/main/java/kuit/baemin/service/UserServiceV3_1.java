@@ -23,7 +23,12 @@ public class UserServiceV3_1 {
 
     @Transactional
     public void save(SignupRequest signupRequest) throws SQLException {
-        userRepository.save(new User(signupRequest.getEmail(), signupRequest.getPassword()));
+        userRepository.save(new User(
+                signupRequest.getEmail(),
+                signupRequest.getPassword(),
+                signupRequest.getNickname(),
+                signupRequest.getPhoneNumber()
+        ));
         validateEmail();
     }
 

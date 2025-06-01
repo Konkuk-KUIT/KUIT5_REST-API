@@ -28,7 +28,12 @@ public class UserServiceV3 {
         TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
         try {
 
-            userRepository.save(new User(signupRequest.getEmail(), signupRequest.getPassword()));
+            userRepository.save(new User(
+                    signupRequest.getEmail(),
+                    signupRequest.getPassword(),
+                    signupRequest.getNickname(),
+                    signupRequest.getPhoneNumber()
+            ));
             validateEmail();
 
             transactionManager.commit(status); //성공시 커밋

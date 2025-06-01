@@ -1,7 +1,6 @@
 package kuit.baemin.repository;
 
 import kuit.baemin.domain.User;
-import kuit.baemin.repository.ex.MyDbException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.support.JdbcUtils;
@@ -10,6 +9,7 @@ import org.springframework.jdbc.support.SQLExceptionTranslator;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.Optional;
 
 /**
  * SQLExceptionTranslator 추가
@@ -26,8 +26,8 @@ public class UserRepositoryV5 implements UserRepository {
     }
 
     public User save(User user)  {
-        String sql = "insert into member(email, password, phone_number, nickname, profile_image) " +
-                "values (?, ?, ?, ?, ?)";
+        String sql = "insert into users(email, password, phone_number, nickname) " +
+                "values (?, ?, ?, ?)";
 
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -37,9 +37,8 @@ public class UserRepositoryV5 implements UserRepository {
             pstmt = con.prepareStatement(sql);
             pstmt.setString(1, user.getEmail());
             pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getPhone_number());
+            pstmt.setString(3, user.getPhoneNumber());
             pstmt.setString(4, user.getNickname());
-            pstmt.setString(5, user.getProfile_image());
             pstmt.executeUpdate();
             return user;
         } catch (SQLException e) {
@@ -60,5 +59,58 @@ public class UserRepositoryV5 implements UserRepository {
         JdbcUtils.closeStatement(stmt);
         DataSourceUtils.releaseConnection(con, dataSource);
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    return count > 0;
+                }
+                return false;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        String sql = "SELECT * FROM users WHERE email = ?";
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, email);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                User user = new User(
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("phone_number"),
+                        rs.getString("nickname")
+                );
+                user.setUserId(rs.getLong("user_id"));
+                return Optional.of(user);
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            log.error("db error", e);
+            throw sqlExceptionTranslator.translate("findByEmail", sql, e);
+        } finally {
+            close(con, pstmt, rs);
+        }
+    }
+
 
 }
