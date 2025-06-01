@@ -73,11 +73,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         String sql = "select * from user where email = ?";
         try {
             // RowMapper의 결과
-            return jdbcTemplate.queryForObject(sql,
+            User user = jdbcTemplate.queryForObject(sql,
                     new Object[]{email},
                     (rs, rowNum) -> {
                         User u = new User(
@@ -87,11 +87,13 @@ public class UserRepositoryImpl implements UserRepository {
                                 rs.getString("nickname")
                         );
                         // 메서드 전체의 결과 반환
+                        u.setGrade(UserGrade.fromKrName(rs.getString("grade")));
                         return u;
                     }
             );
+            return Optional.ofNullable(user);
         } catch (EmptyResultDataAccessException e) {
-            throw new BusinessException(BaseResponseStatus.USER_NOT_FOUND);
+            return Optional.empty();
         }
     }
 
