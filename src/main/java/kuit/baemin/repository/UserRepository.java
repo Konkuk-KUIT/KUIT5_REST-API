@@ -1,8 +1,17 @@
 package kuit.baemin.repository;
 
-import kuit.baemin.domain.User;
+import kuit.baemin.domain.user.User;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository {
 
     public User save(User user);
+    public Optional<User> findById(Long id);
+    Optional<User> findByEmail(String email);
+    public List<User> findAll();
+    public void updatePassword(Long id, String newPassword);
+    void deleteById(Long id);
+    void updateUserAddress(Long id, Long addressId);
 }
