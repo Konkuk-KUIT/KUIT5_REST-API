@@ -3,9 +3,11 @@ package kuit.baemin.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import kuit.baemin.common.auth.JwtInfo;
+import kuit.baemin.common.auth.JwtTokenProvider;
 import kuit.baemin.domain.user.User;
 import kuit.baemin.dto.request.LoginRequest;
-import kuit.baemin.service.LoginService;
+import kuit.baemin.service.UserService;
 import kuit.baemin.utils.BaseResponse;
 import kuit.baemin.utils.BaseResponseStatus;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 public class LoginController {
-    public final LoginService loginService;
+    private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    // todo : 수동 로그인 -> Spring Security 사용
     @PostMapping("/login")
-    public BaseResponse<User> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest request){
-        User user = loginService.login(loginRequest.getEmail(), loginRequest.getPassword());
-        request.getSession().setAttribute("loginUser", user);
-        return new BaseResponse<>(user);
+    public BaseResponse<JwtInfo> login(@Valid @RequestBody LoginRequest loginRequest){
+        User user = userService.validateLogin(loginRequest);
+        JwtInfo jwtInfo = jwtTokenProvider.createToken(user.getEmail(), String.valueOf(user.getUserId()));
+        return new BaseResponse<>(jwtInfo);
     }
 
     @PostMapping("/logout")

@@ -1,6 +1,7 @@
 package kuit.baemin.service;
 
 import kuit.baemin.domain.user.User;
+import kuit.baemin.dto.request.LoginRequest;
 import kuit.baemin.dto.response.UserResponse;
 import kuit.baemin.dto.request.user.PasswordChangeRequest;
 import kuit.baemin.dto.request.user.SignupRequest;
@@ -90,5 +91,17 @@ public class UserService {
     @Transactional
     public void deleteById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Transactional
+    public User validateLogin(LoginRequest loginRequest) {
+        User user = userRepository.findByEmail(loginRequest.getEmail())
+                .orElseThrow(() -> new BusinessException(BaseResponseStatus.USER_NOT_FOUND));
+
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw new BusinessException(BaseResponseStatus.NON_MATCH_PASSWORD);
+        }
+
+        return user;
     }
 }
