@@ -9,6 +9,7 @@ import kuit.baemin.repository.UserRepository;
 import kuit.baemin.utils.BaseResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 회원 가입 API
@@ -31,7 +33,8 @@ public class UserService {
      */
     @Transactional
     public User save(SignupRequest signupRequest) {
-        return userRepository.save(new User(signupRequest.getEmail(), signupRequest.getPassword(), signupRequest.getPhoneNumber(), signupRequest.getNickname()));
+        String encodedPassword = passwordEncoder.encode(signupRequest.getPassword());
+        return userRepository.save(new User(signupRequest.getEmail(), encodedPassword, signupRequest.getPhoneNumber(), signupRequest.getNickname()));
     }
 
     private static void validateEmail() {
@@ -50,8 +53,19 @@ public class UserService {
     public User changePassword(Long id, PasswordChangeRequest passwordChangeRequest) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(BaseResponseStatus.USER_NOT_FOUND));
-        userRepository.updatePassword(id, passwordChangeRequest.getNewPassword());
-        user.setPassword(passwordChangeRequest.getNewPassword());
+        // 먼저 current_password가 맞는지 
+        if (!passwordEncoder.matches(passwordChangeRequest.getCurrentPassword(), user.getPassword())) {
+            throw new BusinessException(BaseResponseStatus.NON_MATCH_PASSWORD);
+        }
+
+        if (passwordEncoder.matches(passwordChangeRequest.getNewPassword(), user.getPassword())) {
+            throw new BusinessException(BaseResponseStatus.SAME_PASSWORD);
+        }
+
+        //이제 업데이트
+        String encodedNewPassword = passwordEncoder.encode(passwordChangeRequest.getNewPassword());
+        userRepository.updatePassword(id, encodedNewPassword);
+        user.setPassword(encodedNewPassword);
         return user;
     }
 

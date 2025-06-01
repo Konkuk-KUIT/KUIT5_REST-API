@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
     public final LoginService loginService;
 
+    // todo : 수동 로그인 -> Spring Security 사용
     @PostMapping("/login")
     public String login(@Valid @RequestBody LoginRequest loginRequest){
         return loginService.login(loginRequest.getEmail(), loginRequest.getPassword()).getEmail();

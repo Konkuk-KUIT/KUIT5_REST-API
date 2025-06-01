@@ -19,10 +19,7 @@ public class PasswordChangeValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         PasswordChangeRequest request = (PasswordChangeRequest) target;
-        if (request.getCurrentPassword().equals(request.getNewPassword())) {
-//            errors.reject("passwordChange", "Current password is same as new password");
-            throw new BusinessException(BaseResponseStatus.SAME_PASSWORD);
-        }
+        // 입력값간에 검증만 Validator에서 하기!
         if (!request.getNewPassword().equals(request.getNewPasswordConfirm())) {
 //            errors.reject("passwordChange", "New passwords do not match");
             throw new BusinessException(BaseResponseStatus.NON_MATCH_PASSWORD);
