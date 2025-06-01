@@ -3,6 +3,7 @@ package kuit.baemin.service;
 import kuit.baemin.domain.address.StoreAddress;
 import kuit.baemin.domain.store.Store;
 import kuit.baemin.dto.request.GenerateStoreRequest;
+import kuit.baemin.dto.response.StoreResponse;
 import kuit.baemin.exception.BusinessException;
 import kuit.baemin.repository.StoreRepository;
 import kuit.baemin.repository.UserRepository;
@@ -43,5 +44,12 @@ public class StoreService {
 
 
         return savedStore;
+    }
+
+    @Transactional
+    public StoreResponse findById(Long id){
+        Store store = storeRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(BaseResponseStatus.STORE_NOT_FOUND));
+        return new StoreResponse(store.getName(), store.getMinimumOrderPrice(), store.getDeliveryFee(), store.getStatus());
     }
 }

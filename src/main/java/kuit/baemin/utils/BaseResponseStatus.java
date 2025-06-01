@@ -18,8 +18,10 @@ public enum BaseResponseStatus {
     LOGIN_FAILED(false, 2006, "아이디 또는 비밀번호가 일치하지 않습니다"),
 
     //address
-    ADDRESS_NOT_FOUND(false, 3001, "존재하지 않는 주소입니다.");
+    ADDRESS_NOT_FOUND(false, 3001, "존재하지 않는 주소입니다."),
 
+    //store
+    STORE_NOT_FOUND(false, 4001, "존재하지 않는 스토어입니다.");
     private final boolean isSuccess;
     private final int responseCode;
     private final String responseMessage;
