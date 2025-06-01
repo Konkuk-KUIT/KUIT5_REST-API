@@ -53,7 +53,7 @@ public class UserService {
     public User changePassword(Long id, PasswordChangeRequest passwordChangeRequest) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(BaseResponseStatus.USER_NOT_FOUND));
-        // 먼저 current_password가 맞는지 
+        // 먼저 current_password가 맞는지
         if (!passwordEncoder.matches(passwordChangeRequest.getCurrentPassword(), user.getPassword())) {
             throw new BusinessException(BaseResponseStatus.NON_MATCH_PASSWORD);
         }
@@ -68,7 +68,6 @@ public class UserService {
         user.setPassword(encodedNewPassword);
         return user;
     }
-
     /**
      * 회원 정보 조회 API
      * @param id
