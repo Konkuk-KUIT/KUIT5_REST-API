@@ -1,7 +1,6 @@
 spring:
-
   datasource:
-    url: ${DATASOURCE_URL_LOCAL}
+    url: ${DATASOURCE_URL_DEV}
     username: ${DATASOURCE_USERNAME}
     password: ${DATASOURCE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -13,3 +12,4 @@ spring:
 
 server:
   port: 9000
+

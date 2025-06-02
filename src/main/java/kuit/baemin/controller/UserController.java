@@ -11,10 +11,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -76,20 +75,40 @@ public class UserController {
         log.info("signup request - email : {}, password : {}",
                 signupRequest.getEmail(), signupRequest.getPassword());
 
-        User user = new User(signupRequest.getEmail(), signupRequest.getPassword());
+        User user = new User(signupRequest.getEmail(), signupRequest.getPassword(),signupRequest.getUserId());
 
         return new BaseResponse<>(user);
     }
 
     // 객체 to json
     @PostMapping("/users")
-//    @ResponseBody
+    @ResponseBody
     public BaseResponse<User> signup (@Validated @RequestBody SignupRequest signupRequest) {
-        log.info("signup request - email : {}, password : {}",
-                signupRequest.getEmail(), signupRequest.getPassword());
+        log.info("signup request - email : {}, password : {},id :{}",
+                signupRequest.getEmail(), signupRequest.getPassword(),signupRequest.getUserId());
 
         User user = usersService.save(signupRequest);
         return new BaseResponse<>(user);
+    }
+
+    @GetMapping("/users")
+    @ResponseBody
+    public BaseResponse<List<User>> getAll () {
+        log.info("getAll request");
+        List<User> users = usersService.findAll();  // 서비스에서 모든 유저 가져오기
+        log.info("총 사용자 수: {}", users.size());
+        return new BaseResponse<>(users);
+    }
+    @DeleteMapping("/users/{id}")
+    @ResponseBody
+    public BaseResponse<Boolean> deleteUser (@PathVariable String id) {
+        log.info("deleteUser request - id : {}", id);
+        return new BaseResponse<>(usersService.delete(id));
+    }
+    @PatchMapping("/users")
+    @ResponseBody
+    public BaseResponse<String> updateUser (@RequestBody User user) {
+        return new BaseResponse<>(usersService.update(user));
     }
 
     //  오류 응답

@@ -29,7 +29,8 @@ public class UserControllerAdvice {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.setValidator(signupValidator);
+        if (binder.getTarget() instanceof kuit.baemin.dto.SignupRequest) {
+            binder.setValidator(signupValidator);
+        }
     }
-
 }
