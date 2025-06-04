@@ -102,6 +102,4 @@ public class UserController {
 
         return new BaseResponse<>(BaseResponseStatus.DUPLICATED_EMAIL);
     }
-
-
 }
