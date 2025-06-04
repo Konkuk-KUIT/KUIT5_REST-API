@@ -1,6 +1,7 @@
 package kuit.baemin.controller.controllerAdvice;
 
 import kuit.baemin.controller.UserController;
+import kuit.baemin.dto.SignupRequest;
 import kuit.baemin.utils.BaseResponse;
 import kuit.baemin.utils.BaseResponseStatus;
 import kuit.baemin.validator.SignupValidator;
@@ -29,7 +30,12 @@ public class UserControllerAdvice {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.setValidator(signupValidator);
+        Object target = binder.getTarget();
+        if (target == null) return;
+
+        if (target instanceof SignupRequest) {
+            binder.addValidators(signupValidator);
+        }
     }
 
 }
